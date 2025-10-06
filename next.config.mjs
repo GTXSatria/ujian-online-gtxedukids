@@ -1,25 +1,37 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Aktifkan React Strict Mode untuk production
+  reactStrictMode: true,
+
+  // TypeScript: peringatkan error, jangan abaikan
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
-  // 禁用 Next.js 热重载，由 nodemon 处理重编译
-  reactStrictMode: false,
+
+  // ESLint: peringatkan error saat build
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  // Webpack dev only
   webpack: (config, { dev }) => {
     if (dev) {
-      // 禁用 webpack 的热模块替换
       config.watchOptions = {
-        ignored: ['**/*'], // 忽略所有文件变化
+        ignored: ['**/*'],
       };
     }
     return config;
   },
-  eslint: {
-    // 构建时忽略ESLint错误
-    ignoreDuringBuilds: true,
+
+  // Environment variables opsional
+  env: {
+    // Jika nanti pakai API key, bisa tambahkan di Vercel
+    API_KEY: process.env.API_KEY || '', // default kosong
   },
+
+  // Optimisasi production
+  swcMinify: true,
 };
 
 export default nextConfig;
